@@ -4,7 +4,7 @@ A C++ discount system that implements various discount strategies.
 
 ## Features
 
-- Multiple discount strategies (Percentage, Threshold, User Level, etc.)
+- Multiple discount strategies (Percentage, Threshold, UserLevel, etc.)
 - Composite discount strategies
 - Time-limited discounts
 - Factory pattern for strategy creation
@@ -29,4 +29,4 @@ ctest
 This project uses GitHub Actions for continuous integration. The CI pipeline:
 - Builds the project
 - Runs unit tests
-- Triggers on push to main and pull requests 
+- Triggers on push to master and pull requests 

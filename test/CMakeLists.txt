@@ -3,6 +3,9 @@ project(DiscountSystem)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Enable testing
+enable_testing()
+
 # Add Abseil
 find_package(absl REQUIRED)
 
@@ -17,6 +20,7 @@ target_link_libraries(discount_context_test
     discount_lib
 )
 target_include_directories(discount_context_test PRIVATE ${PROJECT_SOURCE_DIR})
+add_test(NAME discount_context_test COMMAND discount_context_test)
 
 add_executable(customer_service_test customer_service_test.cc)
 target_link_libraries(customer_service_test 
@@ -25,3 +29,4 @@ target_link_libraries(customer_service_test
     discount_lib
 )
 target_include_directories(customer_service_test PRIVATE ${PROJECT_SOURCE_DIR})
+add_test(NAME customer_service_test COMMAND customer_service_test)
