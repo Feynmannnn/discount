@@ -4,7 +4,7 @@ A C++ discount system that implements various discount strategies.
 
 ## Features
 
-- Multiple discount strategies (Percentage, Threshold, User Level, etc.)
+- Multiple discount strategies (Percentage, Threshold, UserLevel, etc.)
 - Composite discount strategies
 - Time-limited discounts
 - Factory pattern for strategy creation
