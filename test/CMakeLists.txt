@@ -3,6 +3,9 @@ project(DiscountSystem)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Enable testing
+enable_testing()
+
 # Add Abseil
 find_package(absl REQUIRED)
 
