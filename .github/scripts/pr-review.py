@@ -2,12 +2,19 @@ import os
 import subprocess
 from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url=os.getenv("DEEPSEEK_API_BASE"))
+MAX_DIFF_LINES = 5000
 
-base_branch = os.environ.get("GITHUB_BASE_REF", "master")
+client = OpenAI(
+    api_key=os.getenv("DEEPSEEK_API_KEY"), base_url=os.getenv("DEEPSEEK_API_BASE")
+)
+
+
+def get_base_branch():
+    return os.environ.get("GITHUB_BASE_REF", "master")
 
 
 def get_diff():
+    base_branch = get_base_branch()
     subprocess.run(["git", "fetch", "origin", base_branch], check=True)
     diff = subprocess.check_output(
         ["git", "diff", f"origin/{base_branch}...HEAD"], text=True
@@ -42,6 +49,9 @@ if __name__ == "__main__":
     diff_text = get_diff()
     if not diff_text.strip():
         print("No diff found, skipping review")
+        exit(0)
+    if len(diff_text.splitlines()) > MAX_DIFF_LINES:
+        print("❗️ Diff 太大，跳过 AI 审查")
         exit(0)
     review = review_diff(diff_text)
     print("\n==== AI Code Review ====\n")
