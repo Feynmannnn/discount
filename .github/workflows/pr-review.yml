@@ -21,4 +21,4 @@ jobs:
                 DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
                 DEEPSEEK_API_BASE: ${{ secrets.DEEPSEEK_API_BASE }}
               run: |
-                python ./github/scripts/pr-review.py
+                python .github/scripts/pr-review.py
