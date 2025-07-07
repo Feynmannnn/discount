@@ -1,6 +1,9 @@
+import json
 import os
 import subprocess
 from openai import OpenAI
+import requests
+
 
 MAX_DIFF_LINES = 5000
 
@@ -45,6 +48,36 @@ def review_diff(diff_text):
     return response.choices[0].message.content
 
 
+def get_pr_number():
+    event_path = os.environ["GITHUB_EVENT_PATH"]
+    with open(event_path, "r") as f:
+        event_data = json.load(f)
+    return event_data["number"]
+
+
+def post_comment_to_pr(pr_number, comment_body):
+    repo = os.environ["GITHUB_REPOSITORY"]  # 格式：owner/repo
+    token = os.environ["GITHUB_TOKEN"]
+
+    url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+    }
+
+    response = requests.post(
+        url,
+        json={"body": comment_body},
+        headers=headers,
+    )
+
+    if response.status_code == 201:
+        print(f"✅ 评论成功发布到 PR #{pr_number}")
+    else:
+        print(f"❌ 评论失败，状态码：{response.status_code}\n{response.text}")
+
+
 if __name__ == "__main__":
     diff_text = get_diff()
     if not diff_text.strip():
@@ -53,6 +86,6 @@ if __name__ == "__main__":
     if len(diff_text.splitlines()) > MAX_DIFF_LINES:
         print("❗️ Diff 太大，跳过 AI 审查")
         exit(0)
-    review = review_diff(diff_text)
-    print("\n==== AI Code Review ====\n")
-    print(f"Review completed: {review}")
+    pr_number = get_pr_number()
+    review_text = review_diff(diff_text)
+    post_comment_to_pr(pr_number, review_text)
