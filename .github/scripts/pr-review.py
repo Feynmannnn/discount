@@ -6,7 +6,7 @@ openai.api_key = os.getenv("DEEPSEEK_API_KEY")
 openai.base_url = os.getenv("DEEPSEEK_API_BASE")
 
 def get_diff():
-    return subprocess.check_output(["git", "diff", "origin/main...HEAD"], text=True)
+    return subprocess.check_output(["git", "diff", "origin/master...HEAD"], text=True)
 
 def review_diff(diff_text):
     prompt = f"""你是一个经验丰富的高级程序员，请审查以下 GitHub Pull Request 的代码修改（diff）：
