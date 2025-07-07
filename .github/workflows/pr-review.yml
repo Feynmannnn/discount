@@ -27,4 +27,6 @@ jobs:
                 DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
                 DEEPSEEK_API_BASE: ${{ secrets.DEEPSEEK_API_BASE }}
               run: |
+                echo "Checking GITHUB_TOKEN availability..."
+                echo "GITHUB_TOKEN=${GITHUB_TOKEN:0:4}***"
                 python .github/scripts/pr-review.py
