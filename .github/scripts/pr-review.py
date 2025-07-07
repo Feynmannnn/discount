@@ -1,9 +1,8 @@
 import os
 import subprocess
-import openai
+from openai import OpenAI
 
-openai.api_key = os.getenv("DEEPSEEK_API_KEY")
-openai.base_url = os.getenv("DEEPSEEK_API_BASE")
+client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url=os.getenv("DEEPSEEK_API_BASE"))
 
 base_branch = os.environ.get("GITHUB_BASE_REF", "master")
 
@@ -23,7 +22,7 @@ def review_diff(diff_text):
 ---
 请指出其中存在的问题、潜在的 bug、不符合规范的写法，以及可以改进的建议。只关注 diff 中的改动部分即可。"""
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="deepseek-coder",
         messages=[
             {
