@@ -13,6 +13,5 @@ cmake ..
 make -j$(nproc)
 
 # Step 4: Run the test executable
-echo -e "\nRunning the test executable: discount_context_test\n"
-./discount_context_test
-./customer_service_test
+echo -e "\nRunning the tests \n"
+ctest --output-on-failure
