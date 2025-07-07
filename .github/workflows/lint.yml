@@ -17,8 +17,21 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install ruff
+      - name: Install Python linter
         run: pip install ruff==0.4.4
 
-      - name: Run ruff linter
-        run: ruff check .  # 可以指定目录，比如你的脚本在 .github/scripts
+      - name: Run Python linter
+        run: ruff check .
+
+      - name: Install clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+
+      - name: Run clang-tidy on C++ files
+        run: |
+          find . -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.h' \) \
+            -exec clang-tidy {} -- -std=c++17 \;
+
+      - name: Run clang-format on C++ files
+        run: |
+          find . -type f \( -name '*.cpp' -o -name '*.cc' -o -name '*.h' \) \
+            -exec clang-format -i {} \;
